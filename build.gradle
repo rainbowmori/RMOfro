@@ -1,0 +1,94 @@
+plugins {
+    id 'java'
+}
+
+group = 'github.rainbowmori'
+version = '1.0.0'
+description = 'お風呂鯖のプラグイン'
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+
+    maven {url = 'https://repo.onarandombox.com/content/groups/public/'}
+    maven { url "https://repo.dmulloy2.net/repository/public/" }
+    maven { url "https://repo.minebench.de/" }
+
+    maven { url = 'https://jitpack.io' }
+
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT'
+
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+
+    compileOnly 'com.onarandombox.multiversecore:multiverse-core:4.3.9'
+    compileOnly 'com.onarandombox.multiverseinventories:multiverse-inventories:4.2.5'
+    compileOnly 'com.onarandombox.multiverseportals:multiverse-portals:4.2.2'
+    compileOnly 'com.onarandombox.multiversenetherportals:Multiverse-NetherPortals:4.2.1'
+
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.0.0'
+
+    implementation 'com.github.rainbowmori:RainbowAPI:master-SNAPSHOT'
+}
+
+def buildFileName = "${project.name}.jar"
+
+def buildFilePath = "$buildDir\\\\libs\\\\$buildFileName"
+
+def multipleDirectory = [projectDir.getParentFile().getParentFile().toString() + '\\1.20_TestServer\\plugins']
+
+tasks.register("copyJar"){
+    doLast {
+        multipleDirectory.each { outputDir ->
+            copy {
+                from buildFilePath
+                into outputDir
+            }
+        }
+    }
+}
+
+jar{
+    archiveName(buildFileName)
+}
+
+// build.finalizedBy copyJar
+
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(0,'seconds')
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

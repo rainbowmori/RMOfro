@@ -1,0 +1,10 @@
+name : RMOfro
+main : github.rainbowmori.ofro.Ofro
+version : '${version}'
+api-version: '1.20'
+prefix : RMOfro
+author: rainbowmori
+load : POSTWORLD
+description: お風呂鯖のプラグイン
+depend : [RainbowAPI,Multiverse-Core,ProtocolLib,Vault]
+loadBefore : [Multiverse-Portals,Multiverse-Inventories,MultiverseNetherPortals]
