@@ -53,7 +53,7 @@ dependencies {
 
     compileOnly 'com.comphenix.protocol:ProtocolLib:5.0.0'
 
-    implementation 'com.github.rainbowmori:RainbowAPI:master-SNAPSHOT'
+    implementation 'com.github.rainbowmori:RainbowAPI:main-SNAPSHOT'
 }
 
 def buildFileName = "${project.name}.jar"
