@@ -33,7 +33,7 @@ public class PlayerDataConfig extends JsonAPI {
 
   public PlayerDataConfig() {
     super(Ofro.getPlugin(), "playerdata");
-    rmtSellPrices = RainbowAPI.gson.fromJson(getCreateJsonObject(getData(),List.of("data")).get("rmtSellPrices"),typeRmtSellPrices);
+    rmtSellPrices = RainbowAPI.gson.fromJson(getCreateJsonObject(getData(),List.of("data","rmtSellPrices")),typeRmtSellPrices);
   }
 
   @Override

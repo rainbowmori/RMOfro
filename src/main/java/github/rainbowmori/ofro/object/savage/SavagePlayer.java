@@ -3,7 +3,7 @@ package github.rainbowmori.ofro.object.savage;
 import github.rainbowmori.ofro.constants.OfroPrefix;
 import java.util.Optional;
 
-import io.papermc.lib.PaperLib;
+import github.rainbowmori.rainbowapi.dependencies.paperlib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
