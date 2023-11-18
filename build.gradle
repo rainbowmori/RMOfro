@@ -33,16 +33,16 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
 
-    maven {url = 'https://repo.onarandombox.com/content/groups/public/'}
+    maven { url = 'https://repo.onarandombox.com/content/groups/public/' }
     maven { url "https://repo.dmulloy2.net/repository/public/" }
     maven { url "https://repo.minebench.de/" }
 
     maven { url = 'https://jitpack.io' }
-
+    maven { url "https://libraries.minecraft.net" }
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT'
 
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
@@ -51,8 +51,9 @@ dependencies {
     compileOnly 'com.onarandombox.multiverseportals:multiverse-portals:4.2.2'
     compileOnly 'com.onarandombox.multiversenetherportals:Multiverse-NetherPortals:4.2.1'
 
-    compileOnly 'com.comphenix.protocol:ProtocolLib:5.0.0'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'
 
+    implementation 'com.mojang:brigadier:1.0.18'
     implementation 'com.github.rainbowmori:RainbowAPI:main-SNAPSHOT'
 }
 
