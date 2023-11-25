@@ -17,11 +17,18 @@ repositories {
     }
 
     maven { url = 'https://jitpack.io' }
+    maven { url = 'https://repo.onarandombox.com/content/groups/public/' }
+    maven { url = 'https://repo.minebench.de/' }
 }
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT'
 
+	compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly 'com.onarandombox.multiversecore:multiverse-core:4.3.9'
+    compileOnly 'com.onarandombox.multiverseinventories:multiverse-inventories:4.2.5'
+    compileOnly 'com.onarandombox.multiverseportals:multiverse-portals:4.2.2'
+    compileOnly 'com.onarandombox.multiversenetherportals:Multiverse-NetherPortals:4.2.1'
     implementation 'com.github.TeamOfro:OfroLib:main-SNAPSHOT'
 }
 
@@ -53,4 +60,8 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
