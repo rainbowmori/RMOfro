@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.21'
 }
 
 group = 'github.rainbowmori'
@@ -30,6 +31,7 @@ dependencies {
     compileOnly 'com.onarandombox.multiverseportals:multiverse-portals:4.2.2'
     compileOnly 'com.onarandombox.multiversenetherportals:Multiverse-NetherPortals:4.2.1'
     implementation 'com.github.TeamOfro:OfroLib:main-SNAPSHOT'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 def targetJavaVersion = 17
@@ -64,4 +66,14 @@ processResources {
 
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
