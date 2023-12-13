@@ -11,14 +11,14 @@ class MVTeleportEvents : Listener {
   @EventHandler
   fun onPortal(event: MVPortalEvent) {
     val dest = event.destination as? CommandDestination ?: return
-    configManager!!.destinationConfig.runCommand(event.teleportee, dest.name)
+    configManager.destinationConfig.runCommand(event.teleportee, dest.name)
     event.isCancelled = true
   }
 
   @EventHandler
   fun onTeleport(event: MVTeleportEvent) {
     val dest = event.destination as? CommandDestination ?: return
-    configManager!!.destinationConfig.runCommand(event.teleportee, dest.name)
+    configManager.destinationConfig.runCommand(event.teleportee, dest.name)
     event.isCancelled = true
   }
 }

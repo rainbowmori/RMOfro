@@ -1,25 +1,25 @@
 package github.rainbowmori.ofro
 
 import github.rainbowmori.ofro.config.ConfigManager
+import github.rainbowmori.ofro.listeners.MVTeleportEvents
 import org.bukkit.plugin.java.JavaPlugin
 
 class Ofro : JavaPlugin() {
   override fun onEnable() {
     configManager = ConfigManager()
     saveResource("README.txt", true)
+    server.pluginManager.registerEvents(MVTeleportEvents(),this)
   }
-
-  // kotlin の neovim setup をしよう
 
   override fun onDisable() {}
 
   companion object {
     @JvmStatic
-    var configManager: ConfigManager? = null
+    lateinit var configManager: ConfigManager
       private set
 
     fun reloadConfigManager() {
-      configManager!!.save()
+      configManager.save()
       configManager = ConfigManager()
     }
 

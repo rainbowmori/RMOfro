@@ -1,6 +1,8 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.9.21'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'maven-publish'
 }
 
 group = 'github.rainbowmori'
@@ -20,7 +22,23 @@ repositories {
     maven { url = 'https://jitpack.io' }
     maven { url = 'https://repo.onarandombox.com/content/groups/public/' }
     maven { url = 'https://repo.minebench.de/' }
+    maven { url = 'https://repo.codemc.org/repository/maven-public/' }
+    maven { url = 'https://libraries.minecraft.net' }
 }
+
+def anvilGUI = 'net.wesjd:anvilgui:1.9.0-SNAPSHOT'
+def commandAPI = 'dev.jorel:commandapi-bukkit-shade:9.2.0'
+def paperLib = 'io.papermc:paperlib:1.0.8'
+def nbtAPI = 'de.tr7zw:item-nbt-api:2.12.0'
+
+def relocates = [
+        'dev.jorel.commandapi': 'github.rainbowmori.ofro.dependencies.commandapi',
+        'io.papermc.lib'      : 'github.rainbowmori.ofro.dependencies.paperlib',
+        'net.wesjd.anvilgui'  : 'github.rainbowmori.ofro.dependencies.anvilgui',
+        'de.tr7zw.changeme.nbtapi'  : 'github.rainbowmori.ofro.dependencies.nbtapi'
+]
+
+def buildFileName = "${project.name}.jar"
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT'
@@ -30,8 +48,29 @@ dependencies {
     compileOnly 'com.onarandombox.multiverseinventories:multiverse-inventories:4.2.5'
     compileOnly 'com.onarandombox.multiverseportals:multiverse-portals:4.2.2'
     compileOnly 'com.onarandombox.multiversenetherportals:Multiverse-NetherPortals:4.2.1'
+
+    compileOnly 'com.mojang:brigadier:1.0.18'
+    compileOnly anvilGUI
+    compileOnly commandAPI
+    compileOnly paperLib
+    compileOnly nbtAPI
+
+    shadow anvilGUI
+    shadow commandAPI
+    shadow paperLib
+    shadow nbtAPI
+
     implementation 'com.github.TeamOfro:OfroLib:main-SNAPSHOT'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+shadowJar {
+    archiveName(buildFileName)
+    classifier('')
+
+    configurations = [project.configurations.shadow]
+
+    relocates.each { originalPackage, relocatedPackage -> relocate originalPackage, relocatedPackage }
 }
 
 def targetJavaVersion = 17
@@ -67,6 +106,7 @@ processResources {
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = "17"
