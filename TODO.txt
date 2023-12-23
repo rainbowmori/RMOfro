@@ -1,0 +1,9 @@
+TODO バンク使用時に1000未満の場合600円の手数料
+
+TODO ちょっとファイルとかオブジェクト指向をきれいにしたい fix/object ではここを
+
+TODO アイテムのショップはこれをもっときれいにして落とし込もう https://www.youtube.com/watch?v=GLQRWw4IziQ
+
+TODO RTPらへんをきれいに整理したい
+
+TODO ItemEdit Command のメッセージをわかりやすく

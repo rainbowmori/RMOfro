@@ -1,0 +1,104 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'maven-publish'
+}
+
+group = 'github.rainbowmori'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://repo.codemc.org/repository/maven-public/' }
+    maven { url = 'https://repo.onarandombox.com/content/groups/public/' }
+    maven { url = 'https://repo.minebench.de/' }
+}
+
+def anvilGUI = 'net.wesjd:anvilgui:1.9.0-SNAPSHOT'
+def commandAPI = 'dev.jorel:commandapi-bukkit-shade:9.2.0'
+def paperLib = 'io.papermc:paperlib:1.0.8'
+def nbtAPI = 'de.tr7zw:item-nbt-api:2.12.0'
+
+def relocates = [
+        'dev.jorel.commandapi': 'github.rainbowmori.ofro.dependencies.commandapi',
+        'io.papermc.lib'      : 'github.rainbowmori.ofro.dependencies.paperlib',
+        'net.wesjd.anvilgui'  : 'github.rainbowmori.ofro.dependencies.anvilgui',
+        'de.tr7zw.changeme.nbtapi'  : 'github.rainbowmori.ofro.dependencies.nbtapi'
+]
+
+def buildFileName = "${project.name}.jar"
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT'
+
+    compileOnly anvilGUI
+    compileOnly commandAPI
+    compileOnly paperLib
+    compileOnly nbtAPI
+
+    implementation 'com.github.MilkBowl:VaultAPI:1.7'
+    implementation 'com.onarandombox.multiversecore:multiverse-core:4.3.9'
+    implementation 'com.onarandombox.multiverseinventories:multiverse-inventories:4.2.5'
+    implementation 'com.onarandombox.multiverseportals:multiverse-portals:4.2.2'
+    implementation 'com.onarandombox.multiversenetherportals:Multiverse-NetherPortals:4.2.1'
+
+    shadow anvilGUI
+    shadow commandAPI
+    shadow paperLib
+    shadow nbtAPI
+
+    implementation 'com.github.TeamOfro:OfroLib:main-SNAPSHOT'
+}
+
+shadowJar {
+    archiveName(buildFileName)
+    classifier('')
+
+    configurations = [project.configurations.shadow]
+
+    relocates.each { originalPackage, relocatedPackage -> relocate originalPackage, relocatedPackage }
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+jar {
+    archivesBaseName=project.name
+    project.version=''
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
